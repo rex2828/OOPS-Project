@@ -68,3 +68,32 @@ delimiter ;
 
 #for using above procedure we just need to call via passing arguments
 #call procedure_name('arguments');
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#search by first name last name any partial string 
+create procedure Search_FirstName(in name varchar(50))
+begin
+SET @x = name;
+select officer.officer_id ,officer_name , officer_designation from officer,officer_designation where officer.officer_id = officer_designation.officer_id and officer_name LIKE concat('%',@x,'%');
+end //
+
+delimiter ;
+create table Officer_experience(officer_id varchar(50),Officer_experience int, primary key (Officer_id));
+
+#search by exp
+delimiter //
+create procedure search_exp(in exp int)
+begin
+select officer.officer_id ,officer_name , officer_experience from officer,officer_experience where officer.officer_id = officer_experience.officer_id and officer_experience = exp;
+end //
+
+#search by exp greater
+delimiter //
+create procedure search_exp_greater(in gt int)
+begin
+select officer.officer_id ,officer_name , officer_experience from officer,officer_experience where officer.officer_id = officer_experience.officer_id and officer_experience > gt;
+end //
+
+
