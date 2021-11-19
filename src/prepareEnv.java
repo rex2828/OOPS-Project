@@ -12,10 +12,13 @@ public class prepareEnv {
             String q1 = "create table officer(Officer_id int,Officer_name varchar(70),Officer_designation varchar(50),Officer_ranks varchar(50),Officer_experience int,Officer_marital_status varchar(50), primary key (Officer_id));";
             String q2 = "create table officer_Salary(Officer_experience int,Officer_salary int, primary key (Officer_experience));";
             String q3 = "create table officer_Training(Officer_designation varchar(50), Training_type varchar(30),No_of_hours int,primary key (Officer_designation));";
-            String q4 = "create procedure `Insertion`(in id int,in name varchar(70),in designation varchar(50),in ranks varchar(50),in experience int,in marital_status varchar(50))"
-                    + "begin " + " insert into officer values(id,name,designation,ranks,experience,marital_status); "
-                    + "end";
-            String q5 = "create procedure `Deletion`(in id int) " + "begin "
+            String q4 = "create procedure `Insertion`(in id int,in name varchar(70),in designation varchar(50),in ranks varchar(50),in experience int,in marital_status varchar(50)) "
+                    + " begin " + " declare tmp int default 0; "
+                    + " select count(*) into tmp from officer where Officer_id = id; " + " if tmp = 0 then "
+                    + " insert into officer values(id,name,designation,ranks,experience,marital_status); " + " else "
+                    + " update officer set officer_name = name , officer_designation = designation , officer_ranks = ranks , officer_experience = experience , officer_marital_status = marital_status where officer_id = id; "
+                    + " end if; " + " end";
+            String q5 = "create procedure `Deletion`(in id int) " + " begin "
                     + " delete from officer where Officer_id = id; " + "end";
             String q6 = "insert into officer_salary values(1,50000);";
             String q7 = "insert into officer_salary values(2,60000);";
