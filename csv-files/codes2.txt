@@ -1,0 +1,88 @@
+create table officer(Officer_id int,Officer_name varchar(70),Officer_designation varchar(50),Officer_ranks varchar(50),Officer_experience int,Officer_marital_status varchar(50), primary key (Officer_id));
+create table officer_Salary(Officer_experience int,Officer_salary int, primary key (Officer_experience));
+create table officer_Training(Officer_designation varchar(50), Training_type varchar(30),No_of_hours int,primary key (Officer_designation));
+
+#insertion
+delimiter //
+create procedure Insertion(in id int,in name varchar(70),in designation varchar(50),in ranks varchar(50),in experience int,in marital_status varchar(50)) begin insert into officer values(id,name,designation,ranks,experience,marital_status); end //
+delimiter ;
+
+#deletion
+
+create procedure Deletion(in id int)
+begin
+delete from officer where Officer_id = id;
+end //
+delimiter ;
+
+#update by old and new name
+delimiter //
+create procedure Update_name(in new varchar(50), in old varchar(50) )
+begin
+select Officer_id,Officer_name,Officer_designation,Officer_ranks,officer.Officer_experience,Officer_marital_status,Officer_salary from officer ,officer_salary where officer.officer_experience = officer_salary.officer_experience and officer.officer_name = old;
+update officer set officer_name = new where officer_name = old;
+select Officer_id,Officer_name,Officer_designation,Officer_ranks,officer.Officer_experience,Officer_marital_status,Officer_salary from officer ,officer_salary where officer.officer_experience = officer_salary.officer_experience and officer.officer_name = new;
+end //
+
+#search by name
+create procedure Search_name(in name varchar(50))
+begin
+select Officer_id,Officer_name,Officer_designation,Officer_ranks,officer.Officer_experience,Officer_marital_status,Officer_salary from officer ,officer_salary where officer.officer_experience = officer_salary.officer_experience and officer.officer_name = name;
+end //
+
+#search by ids
+delimiter //
+create procedure Search_id(in id int)
+begin
+select Officer_id,Officer_name,Officer_designation,Officer_ranks,officer.Officer_experience,Officer_marital_status,Officer_salary from officer ,officer_salary where officer.officer_experience = officer_salary.officer_experience and officer.officer_id = id;
+end //
+
+#sorting by name
+delimiter //
+create procedure sorting_name()
+begin
+select Officer_id,Officer_name,Officer_designation,Officer_ranks,officer.Officer_experience,Officer_marital_status,Officer_salary from officer ,officer_salary where officer.officer_experience = officer_salary.officer_experience order by Officer_name asc;
+end //
+
+#sorting by ids
+delimiter //
+create procedure sorting_id()
+begin
+select Officer_id,Officer_name,Officer_designation,Officer_ranks,officer.Officer_experience,Officer_marital_status,Officer_salary from officer ,officer_salary where officer.officer_experience = officer_salary.officer_experience order by Officer_id asc;
+end //
+
+#searching by partial strings
+delimiter ///
+create procedure Search_partial_string(in name varchar(50))
+begin
+SET @x = name;
+select Officer_id,Officer_name,Officer_designation,Officer_ranks,officer.Officer_experience,Officer_marital_status,Officer_salary from officer ,officer_salary where officer.officer_experience = officer_salary.officer_experience and officer_name LIKE concat('%',@x,'%');
+end //
+
+#search by exp greater than
+delimiter //
+create procedure search_exp_greater(in gt int)
+begin
+select Officer_id,Officer_name,Officer_designation,Officer_ranks,officer.Officer_experience,Officer_marital_status,Officer_salary from officer ,officer_salary where officer.officer_experience = officer_salary.officer_experience and officer_salary.officer_experience > gt;
+end //
+
+#make a if else procedure like if desg = army change in where clause army with same query written bellow
+ select Officer_id,Officer_name,officer.Officer_designation,Officer_ranks,Officer_experience,Officer_marital_status,training_type,no_of_hours from officer ,officer_training where officer.officer_designation = officer_training.officer_designation and officer_training.officer_designation = 'Airforce';
+
+
+
+
+officer table : 
+id , name , designation
+
+navy_officer table :
+id , rank , marital_status , experience , sailing_hours
+
+airforce_officer table :
+id , rank , marital_status , experience , flying_hours
+
+army_officer table :
+id , rank , marital_status , experience , ground_exercise_hours
+
+officer_salary : 
+experience , Officer_salary
