@@ -2,8 +2,8 @@ import java.sql.*;
 
 public class deletion {
     public static void main(String[] args) {
-        if (args[1] == "id") {
-            String jdbcUrl = "jdbc:mysql://localhost:3306/project";
+        if (args[1].equals("id")) {
+            String jdbcUrl = "jdbc:mysql://localhost:3306/oop";
             String username = "root";
             String password = "root";
             Connection connection = null;
