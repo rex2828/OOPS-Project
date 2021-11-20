@@ -9,7 +9,6 @@ public class csv_to_dbms {
         String password = "root";
 
         String filePath = "../csv-files/Officer.csv";
-        // String filePath = "D:/Backup/programs/OOPS-Project/csv-files/Officer.csv";
 
         int batchSize = 100;
 
