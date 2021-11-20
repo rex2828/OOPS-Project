@@ -9,16 +9,21 @@ public class prepareEnv {
         try {
             connection = DriverManager.getConnection(jdbcUrl, username, password);
             Statement s = connection.createStatement();
+            String q111 = "drop table if exists officer";
             String q1 = "create table officer(Officer_id int,Officer_name varchar(70),Officer_designation varchar(50),Officer_ranks varchar(50),Officer_experience int,Officer_marital_status varchar(50), primary key (Officer_id));";
-            String q2 = "create table officer_Salary(Officer_experience int,Officer_salary int, primary key (Officer_experience));";
-            String q3 = "create table officer_Training(Officer_designation varchar(50), Training_type varchar(30),No_of_hours int,primary key (Officer_designation));";
+            String q22 = "drop table if exists officer_salary";
+            String q2 = "create table officer_salary(Officer_experience int,Officer_salary int, primary key (Officer_experience));";
+            String q33 = "drop table if exists officer_training";
+            String q3 = "create table officer_training(Officer_designation varchar(50), Training_type varchar(30),No_of_hours int,primary key (Officer_designation));";
+            String q44 = "drop procedure if exists Insertion";
             String q4 = "create procedure `Insertion`(in id int,in name varchar(70),in designation varchar(50),in ranks varchar(50),in experience int,in marital_status varchar(50)) "
                     + " begin " + " declare tmp int default 0; "
                     + " select count(*) into tmp from officer where Officer_id = id; " + " if tmp = 0 then "
                     + " insert into officer values(id,name,designation,ranks,experience,marital_status); " + " else "
                     + " update officer set officer_name = name , officer_designation = designation , officer_ranks = ranks , officer_experience = experience , officer_marital_status = marital_status where officer_id = id; "
                     + " end if; " + " end";
-            String q5 = "create procedure `Deletion`(in id int) " + " begin "
+            String q55 = "drop procedure if exists Deletion";
+            String q5 = "create procedure `Deletion`(in id int) " + "begin "
                     + " delete from officer where Officer_id = id; " + "end";
             String q6 = "insert into officer_salary values(1,50000);";
             String q7 = "insert into officer_salary values(2,60000);";
@@ -31,10 +36,15 @@ public class prepareEnv {
             String q13 = "insert into officer_training values('Navy','sailing hours',15);";
             String q14 = "insert into officer_training values('Army','ground exercise hours',13);";
 
+            s.addBatch(q111);
             s.addBatch(q1);
+            s.addBatch(q22);
             s.addBatch(q2);
+            s.addBatch(q33);
             s.addBatch(q3);
+            s.addBatch(q44);
             s.addBatch(q4);
+            s.addBatch(q55);
             s.addBatch(q5);
             s.addBatch(q6);
             s.addBatch(q7);

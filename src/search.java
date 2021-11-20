@@ -79,9 +79,8 @@ class Officer {
 
     @Override
     public String toString() {
-        return "ID : " + this.id + ", Name : " + this.name + ", Designation : " + this.designation
-                + ", Marital Status : " + this.marital_status + ", Rank : " + this.rank + ", Experience : "
-                + this.experience + ", Salary : " + this.salary;
+        return "ID:" + this.id + "|Name:" + this.name + "|Designation:" + this.designation + "|MaritalStatus:"
+                + this.marital_status + "|Rank:" + this.rank + "|Exp:" + this.experience + "|Sal:" + this.salary;
     }
 }
 
@@ -96,7 +95,7 @@ class NavyOfficer extends Officer {
 
     @Override
     public String toString() {
-        return super.toString() + ", Sailing Hours : " + this.sailingHours;
+        return super.toString() + "|Sailing Hours:" + this.sailingHours;
     }
 
 }
@@ -112,7 +111,7 @@ class AirforceOfficer extends Officer {
 
     @Override
     public String toString() {
-        return super.toString() + ", Flying Hours : " + this.flyingHours;
+        return super.toString() + "|Flying Hours:" + this.flyingHours;
     }
 }
 
@@ -127,7 +126,7 @@ class ArmyOfficer extends Officer {
 
     @Override
     public String toString() {
-        return super.toString() + ", Ground Excercise Hours : " + this.ground_excerciseHours;
+        return super.toString() + "|GroundExcerciseHours:" + this.ground_excerciseHours;
     }
 }
 
@@ -136,6 +135,7 @@ class search_by {
     ArrayList<Officer> fetch_data() {
         String jdbcUrl = "jdbc:mysql://localhost:3306/oop";
         String username = "root";
+        // String password = "admin";
         String password = "root";
         Connection connection = null;
         try {
@@ -181,6 +181,41 @@ class search_by {
             }
         }
         System.out.println("Sorry! Given Id not found");
+    }
+
+    void experience(int experience) {
+        ArrayList<Officer> a = new ArrayList<Officer>();
+        a = fetch_data();
+        int flag = -1;
+
+        for (Officer obj : a) {
+            if (obj.getExperience() == experience) {
+                if (flag == -1) {
+                    System.out.println("Officers with " + experience + " years of experience are: \n");
+                    flag = 0;
+                }
+                System.out.println(obj + "\n");
+            }
+        }
+        if (flag == -1)
+            System.out.println("Sorry! No officer with given experience found.");
+    }
+
+    void salary(int salary) {
+        ArrayList<Officer> a = new ArrayList<Officer>();
+        a = fetch_data();
+        int flag = -1;
+        for (Officer obj : a) {
+            if (obj.getSalary() == salary) {
+                if (flag == -1) {
+                    System.out.println("Officers with " + salary + " amount of salary are: \n");
+                    flag = 0;
+                }
+                System.out.println(obj + "\n");
+            }
+        }
+        if (flag == -1)
+            System.out.println("Sorry! No officer with given salary found.");
     }
 
     void field(String field, String value) {
@@ -231,6 +266,7 @@ public class search {
             System.out.println("Please enter 3 arguments");
             return;
         }
+        args[1] = args[1].toLowerCase();
         if (args[1].equals("name") || args[1].equals("designation") || args[1].equals("rank")
                 || args[1].equals("traininghours") || args[1].equals("maritalstatus") || args[1].equals("salary")
                 || args[1].equals("experience") || args[1].equals("id")) {
@@ -239,9 +275,13 @@ public class search {
                 int id = Integer.parseInt(args[2]);
                 obj.id(id);
                 break;
-            case "traininghours", "experience", "salary":
-                // int num = Integer.parseInt(args[2]);
-                // obj.numeric(args[1],num);
+            case "experience":
+                int exp = Integer.parseInt(args[2]);
+                obj.experience(exp);
+                break;
+            case "salary":
+                int sal = Integer.parseInt(args[2]);
+                obj.salary(sal);
                 break;
             default:
                 obj.field(args[1], args[2]);
